@@ -10,32 +10,32 @@ Local cache
 
 Create a cache with 10 MB limit:
   
-  CacheManager cacheManager = (CacheManager) Caching.getCacheManager();
-  CacheActorRefApi<Long, String> cache = cacheManager.create("myLocalCache", 10 * 1024 * 1024);
+    CacheManager cacheManager = (CacheManager) Caching.getCacheManager();
+    CacheActorRefApi<Long, String> cache = cacheManager.create("myLocalCache", 10 * 1024 * 1024);
 
 Put:
 
-  cache.put(1L, "First Value");
+    cache.put(1L, "First Value");
 
 Get:
   
-  Future<Object> fValue = cache.get(1l);
-  Timeout timeout = new Timeout(Duration.parse("1 seconds"));
-  String result = (String) Await.result(fValue, timeout.duration());
+    Future<Object> fValue = cache.get(1l);
+    Timeout timeout = new Timeout(Duration.parse("1 seconds"));
+    String result = (String) Await.result(fValue, timeout.duration());
 
 Remove:
 
-  cache.remove(1L)
-  cache.removeAll()
+    cache.remove(1L)
+    cache.removeAll()
 
 Conditional put:
 
-  cache.putIfAbsent(2L, "Second Value")
+    cache.putIfAbsent(2L, "Second Value")
 
 Time to live:
 
-  cache.put(1L, "First Value", 5)            // Cache entry will be invalidated after 5 seconds
-  cache.putIfAbsent(2L, "Second Value", 10)  // 10 seconds
+    cache.put(1L, "First Value", 5)            // Cache entry will be invalidated after 5 seconds
+    cache.putIfAbsent(2L, "Second Value", 10)  // 10 seconds
 
 
 Remote cache
@@ -46,16 +46,18 @@ Remote cache
 
 On node 1:
   
-  cache = cacheManager.create("node1Cache", 10 * 1024 * 1024);
+    cache = cacheManager.create("node1Cache", 10 * 1024 * 1024);
 
 On node 2:
-  cache = cacheManager.create("node2Cache", 10 * 1024 * 1024);
+    cache = cacheManager.create("node2Cache", 10 * 1024 * 1024);
 
 On node 3:
-  cache = cacheManager.create("node3Cache", 10 * 1024 * 1024);
-  remoteCache = cacheManager.getRemote("node1Cache", "127.0.0.1", 2551);
+
+    cache = cacheManager.create("node3Cache", 10 * 1024 * 1024);
+    remoteCache = cacheManager.getRemote("node1Cache", "127.0.0.1", 2551);
         
 On node 1:
+    
     cache.put(1L, "First Value");
     
 On node 3:
